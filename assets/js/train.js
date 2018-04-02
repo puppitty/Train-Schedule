@@ -52,14 +52,14 @@ $(document).ready(function () {
     // console.log(sv.trainFreq);
 
     // get the current time
-    var trainTimeConverted = moment(trainTime, "HH:mm").subtract(1,"years");
+    var trainTimeConverted = moment(trainTime, "HH:mm").subtract(1, "years");
     console.log("Train Time Converted: " + trainTimeConverted);
 
 
     var currentTime = moment();
     console.log("Current Time: " + moment(currentTime).format("hh:mm"));
 
-   
+
     var diffTime = moment().diff(moment(trainTimeConverted), "minutes");
     console.log("Difference in Time: " + diffTime);
 
@@ -69,6 +69,8 @@ $(document).ready(function () {
 
     var tMinutesTillTrain = trainFreq - tRemainder;
     console.log("Minutes till Train: " + tMinutesTillTrain);
+    var trainMinutes = moment(tMinutesTillTrain).format("hh:mm");
+    console.log("Minutes tii train (formatted): " + trainMinutes);
 
     var nextTrain = moment().add(tMinutesTillTrain, "minutes");
     console.log("Arrivals time: " + moment(nextTrain).format("hh:mm"));
@@ -89,10 +91,10 @@ $(document).ready(function () {
       snapshot.val().trainDest +
       "</td><td>" +
       snapshot.val().trainFreq +
-      "</td><td>" + 
-      snapshot.val().trainArrival +
-      "</td><td>" + 
-      snapshot.val().tMinutesTillTrain +
+      "</td><td>" +
+      trainArrival +
+      "</td><td>" +
+      tMinutesTillTrain +
       "</td><td>" + " " +
       "</td><td>" +
       "</tr>");
