@@ -16,7 +16,7 @@ $(document).ready(function () {
   var trainName = "";
   var trainDest = "";
   var trainTime = 0;
-  var trainFreq = "";
+  var trainFreq = 0;
 
   // Capture Button Click 
   // not sure if this correctly links to HTML
@@ -24,17 +24,17 @@ $(document).ready(function () {
     event.preventDefault();
 
     // Grabbed values from text boxes
-    trainName = $("#train-name-input").val().trim();
-    trainDest = $("#train-dest-input").val().trim();
+    trainName = $("#train-input").val().trim();
+    trainDest = $("#dest-input").val().trim();
     trainTime = $("#time-input").val().trim();
     trainFreq = $("#freq-input").val().trim();
 
     // Code for handling the push
-    trainsched.ref().push({
-      train: trainName,
-      dest: trainDest,
-      time: trainTime,
-      freq: trainFreq,
+    database.ref().push({
+      trainName: trainName,
+      TrainDest: trainDest,
+      trainTime: trainTime,
+      trainFreq: trainFreq,
       dateAdded: firebase.database.ServerValue.TIMESTAMP
     });
 
@@ -46,25 +46,25 @@ $(document).ready(function () {
     var sv = snapshot.val();
 
     // Console.loging the last user's data
-    console.log(sv.train);
-    console.log(sv.dest);
-    console.log(sv.time);
-    console.log(sv.freq);
+    console.log(sv.trainName);
+    console.log(sv.trainDest);
+    console.log(sv.trainTime);
+    console.log(sv.trainFreq);
 
     // Change the HTML to reflect
-    $("#name-display").text(sv.train);
-    $("#email-display").text(sv.dest);
-    $("#age-display").text(sv.time);
-    $("#comment-display").text(sv.freq);
+    $("#name-display").text(sv.trainName);
+    $("#dest-display").text(sv.trainDest);
+    $("#time-display").text(sv.trainTime);
+    $("#freq-display").text(sv.trainFreq);
 
     $("#data-goes-here").append("<tr><td>" +
-      snapshot.val().train +
+      snapshot.val().trainName +
       "</td><td>" +
-      snapshot.val().dest +
+      snapshot.val().trainDest +
       "</td><td>" +
-      snapshot.val().time +
-      "</td><td>" + freq + "</td><td>" +
-      snapshot.val().freq +
+      snapshot.val().trainTime +
+      "</td><td>" + trainFreq + "</td><td>" +
+      snapshot.val().trainFreq +
       "</td><td>" + " " +
       "</td><td>" +
       "</tr>");
