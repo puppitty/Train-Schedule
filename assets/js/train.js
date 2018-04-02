@@ -32,7 +32,7 @@ $(document).ready(function () {
     // Code for handling the push
     database.ref().push({
       trainName: trainName,
-      TrainDest: trainDest,
+      trainDest: trainDest,
       trainTime: trainTime,
       trainFreq: trainFreq,
       dateAdded: firebase.database.ServerValue.TIMESTAMP
@@ -45,11 +45,35 @@ $(document).ready(function () {
     // storing the snapshot.val() in a variable for convenience
     var sv = snapshot.val();
 
-    // Console.loging the last user's data
-    console.log(sv.trainName);
-    console.log(sv.trainDest);
-    console.log(sv.trainTime);
-    console.log(sv.trainFreq);
+    // Console.logging the last user's data
+    // console.log(sv.trainName);
+    // console.log(sv.trainDest);
+    // console.log(sv.trainTime);
+    // console.log(sv.trainFreq);
+
+    // get the current time
+    var trainTimeConverted = moment(trainTime, "HH:mm").subtract(1,"years");
+    console.log("Train Time Converted: " + trainTimeConverted);
+
+
+    var currentTime = moment();
+    console.log("Current Time: " + moment(currentTime).format("hh:mm"));
+
+   
+    var diffTime = moment().diff(moment(trainTimeConverted), "minutes");
+    console.log("Difference in Time: " + diffTime);
+
+    console.log(trainFreq);
+    var tRemainder = diffTime % trainFreq;
+    console.log("tRemainder: " + tRemainder);
+
+    var tMinutesTillTrain = trainFreq - tRemainder;
+    console.log("Minutes till Train: " + tMinutesTillTrain);
+
+    var nextTrain = moment().add(tMinutesTillTrain, "minutes");
+    console.log("Arrivals time: " + moment(nextTrain).format("hh:mm"));
+    var trainArrival = moment(nextTrain).format("hh:mm");
+    // console.log(trainArrival);
 
     // Change the HTML to reflect
     $("#name-display").text(sv.trainName);
@@ -57,14 +81,18 @@ $(document).ready(function () {
     $("#time-display").text(sv.trainTime);
     $("#freq-display").text(sv.trainFreq);
 
+    console.log(trainArrival);
+
     $("#data-goes-here").append("<tr><td>" +
       snapshot.val().trainName +
       "</td><td>" +
       snapshot.val().trainDest +
       "</td><td>" +
-      snapshot.val().trainTime +
-      "</td><td>" + trainFreq + "</td><td>" +
       snapshot.val().trainFreq +
+      "</td><td>" + 
+      snapshot.val().trainArrival +
+      "</td><td>" + 
+      snapshot.val().tMinutesTillTrain +
       "</td><td>" + " " +
       "</td><td>" +
       "</tr>");
