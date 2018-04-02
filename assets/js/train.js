@@ -38,6 +38,11 @@ $(document).ready(function () {
       dateAdded: firebase.database.ServerValue.TIMESTAMP
     });
 
+    // Clear the text boxes
+    $("#train-input").val("");
+    $("#dest-input").val("");
+    $("#time-input").val("");
+    $("#freq-input").val("");
   });
 
   // Firebase watcher + initial loader + order/limit HINT: .on("child_added"
@@ -45,11 +50,7 @@ $(document).ready(function () {
     // storing the snapshot.val() in a variable for convenience
     var sv = snapshot.val();
 
-    // Console.logging the last user's data
-    // console.log(sv.trainName);
-    // console.log(sv.trainDest);
-    // console.log(sv.trainTime);
-    // console.log(sv.trainFreq);
+
 
     // get the current time
     var trainTimeConverted = moment(trainTime, "HH:mm").subtract(1, "years");
