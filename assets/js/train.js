@@ -74,13 +74,13 @@ $(document).ready(function () {
 
     var nextTrain = moment().add(tMinutesTillTrain, "minutes");
     console.log("Arrivals time: " + moment(nextTrain).format("hh:mm"));
-    var trainArrival = moment(nextTrain).format("hh:mm");
+    var trainArrival = moment(nextTrain).format("hh:mm A");
     // console.log(trainArrival);
 
     // Change the HTML to reflect
     $("#name-display").text(sv.trainName);
     $("#dest-display").text(sv.trainDest);
-    $("#time-display").text(sv.trainTime);
+    $("#time-display").text(sv.trainTimeConverted);
     $("#freq-display").text(sv.trainFreq);
 
     console.log(trainArrival);
