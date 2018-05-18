@@ -13,24 +13,39 @@ $(document).ready(function () {
 
   // Initial Values
   var database = firebase.database();
+  var trainSched = firebase.database().ref().child("trainTable");
   var trainName = "";
   var trainDest = "";
   var trainTime = 0;
   var trainFreq = 0;
+  var trainKey = "";
+
+  // set clock for header
+  setInterval(function () {
+    $('#time').html(moment().format('MMMM Do YYYY; h:mm:ss a'))
+  }, 1000);
+
+  moment().format();
+  var date = null;
+
+  var updateDateTime = moment();
+  var newTrainTime = 0;
 
   // Capture Button Click 
   // not sure if this correctly links to HTML
+  $(document).on("click", "#delete", removeTrain);
   $("#add-train-btn").on("click", function (event) {
     event.preventDefault();
 
     // Grabbed values from text boxes
     trainName = $("#train-input").val().trim();
     trainDest = $("#dest-input").val().trim();
-    trainTime = $("#time-input").val().trim();
+    trainTime = moment($('#ftime-input').val().trim(), "HH:mm").format("X");
     trainFreq = $("#freq-input").val().trim();
+    newTrainTime = moment().format("X");
 
     // Code for handling the push
-    database.ref().push({
+    database.ref().child("trains").push({
       trainName: trainName,
       trainDest: trainDest,
       trainTime: trainTime,
@@ -50,8 +65,6 @@ $(document).ready(function () {
     // storing the snapshot.val() in a variable for convenience
     var sv = snapshot.val();
 
-
-
     // get the current time
     var trainTimeConverted = moment(trainTime, "HH:mm").subtract(1, "years");
     console.log("Train Time Converted: " + trainTimeConverted);
@@ -59,6 +72,8 @@ $(document).ready(function () {
 
     var currentTime = moment();
     console.log("Current Time: " + moment(currentTime).format("hh:mm"));
+    var displayTime = moment(currentTime).format("hh:mm a");
+    var timeNow = moment().format('h:mm:ss a');
 
 
     var diffTime = moment().diff(moment(trainTimeConverted), "minutes");
@@ -79,6 +94,7 @@ $(document).ready(function () {
     // console.log(trainArrival);
 
     // Change the HTML to reflect
+    // $("#time").text("Current time: " + timeNow);
     $("#name-display").text(sv.trainName);
     $("#dest-display").text(sv.trainDest);
     $("#time-display").text(sv.trainTimeConverted);
@@ -96,12 +112,41 @@ $(document).ready(function () {
       trainArrival +
       "</td><td>" +
       tMinutesTillTrain +
-      "</td><td>" + " " +
+      "</td><td>" + "<span id='delete'>X</span></div>" +
       "</td><td>" +
       "</tr>");
+    // console.log(snapshot.val().key);
 
     // Handle the errors
   }, function (errorObject) {
     console.log("Errors handled: " + errorObject.code);
   })
+
+  function removeTrain() {
+    var trainKey = $(this).attr("data-train");
+    database.ref("trains/" + trainKey.remove());
+    var currentRow = $(this).closest("tr");
+    // event.preventDefault();
+
+    // e.preventDefault();
+    // e.stopPropogation();
+    // var key = $(this).data('key');
+    // console.log(key);
+    // firebase.database().ref("trainTable").child(key).remove;
+
+
+    // console.log(trainId);
+    // var col1 = currentRow.find("td:eq(0)").text();
+    // var trainCode = col1.substr(0, 3);
+    // trainSched.orderByChild("trainCode".equalTo(trainCode).on("value", function (snapshot) {
+    //   console.log("Row to be deleted is: " + snapshot.val().trainName);
+    // }))
+    // remove();
+    $(this).closest("tr").remove();
+    var getKey = $(this).parent().attr("id");
+    console.log(getKey);
+  };
+
+  // database.ref().child(getKey).remove();
+
 });

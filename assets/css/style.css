@@ -9,3 +9,8 @@
 h3 {
   padding-top: 20px;
 }
+
+#delete {
+  color: red;
+  font-weight: bolder
+}
